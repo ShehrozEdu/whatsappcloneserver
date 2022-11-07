@@ -7,4 +7,5 @@ Router.post("/add-user", UserController.addUser);
 Router.get("/get-user", UserController.getUser);
 
 Router.post("/conversation/add", Conversation.newConversation);
+Router.post("/conversation/get", Conversation.getConversation);
 module.exports = Router;

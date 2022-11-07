@@ -21,6 +21,19 @@ const ConversationController = {
       return res.status(500).json(error.message);
     }
   },
+
+  getConversation: async (req, res) => {
+    try {
+      const senderId = req.body.senderId;
+      const receiverId = req.body.receiverId;
+      const conversation = await Conversation.findOne({
+        members: { $all: [receiverId, senderId] },
+      });
+      return res.status(200).json(conversation);
+    } catch (error) {
+      return res.status(500).json(error.message);
+    }
+  },
 };
 
 module.exports = ConversationController;
