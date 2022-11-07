@@ -24,14 +24,12 @@ const ConversationController = {
 
   getConversation: async (req, res) => {
     try {
-      const senderId = req.body.senderId;
-      const receiverId = req.body.receiverId;
       const conversation = await Conversation.findOne({
-        members: { $all: [receiverId, senderId] },
+        members: { $all: [req.body.senderId, req.body.receiverId] },
       });
-      return res.status(200).json(conversation);
+      res.status(200).json(conversation);
     } catch (error) {
-      return res.status(500).json(error.message);
+      res.status(500).json(error);
     }
   },
 };
