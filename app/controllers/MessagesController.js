@@ -9,6 +9,7 @@ const MessagesController = {
       await Conversation.findByIdAndUpdate(req.body.conversationId, {
         message: req.body.text,
       });
+      return res.status(200).json("Message Sent successfully");
     } catch (error) {
       return res.status(500).send(error);
     }
