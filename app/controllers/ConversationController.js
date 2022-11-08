@@ -27,9 +27,9 @@ const ConversationController = {
       const conversation = await Conversation.findOne({
         members: { $all: [req.body.senderId, req.body.receiverId] },
       });
-      res.status(200).json(conversation);
+      return res.status(200).json(conversation);
     } catch (error) {
-      res.status(500).json(error);
+      return res.status(500).json(error);
     }
   },
 };
