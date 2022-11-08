@@ -10,5 +10,5 @@ Router.get("/get-user", UserController.getUser);
 Router.post("/conversation/add", Conversation.newConversation);
 Router.post("/conversation/get", Conversation.getConversation);
 Router.post("/messages/add", Messages.send);
-Router.post("/messages/get/:id", Messages.getMessages);
+Router.get("/messages/get/:id", Messages.getMessages);
 module.exports = Router;
