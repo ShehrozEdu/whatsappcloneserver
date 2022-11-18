@@ -17,8 +17,8 @@ Router.get("/messages/get/:id", Messages.getMessages);
 //File
 
 Router.post(
-  "/files/upload",
-  Middleware.uploadImg.single("file"),
+  "/file/upload",
+  Middleware.single("file"),
   FileController.fileUpload
 );
 module.exports = Router;
