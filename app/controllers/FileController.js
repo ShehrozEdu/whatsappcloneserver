@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const grid = require("gridfs-stream");
 
-const url = "localhost:4000/api";
+const url = "http://localhost:4000/api";
 
 let gfs;
 let gridFsBucket;
@@ -20,7 +20,7 @@ const FileController = {
       if (!req.file) {
         return res.status(404).json("File not Found");
       }
-      const imgUrl = ${url}/file/${req.file.filename};
+      const imgUrl = `${url}/file/${req.file.filename}`;
       return await res.status(200).json(imgUrl);
     } catch (error) {
       return res.status(500).json(error.message);
