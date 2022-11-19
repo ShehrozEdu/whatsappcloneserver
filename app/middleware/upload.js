@@ -14,11 +14,11 @@ const storage = new GridFsStorage({
     const match = ["image/png", "image/jpg"];
 
     if (match.indexOf(file.mimeType) === -1) {
-      return `${Math.random(11)}-file-${file.originalname}`;
+      return `${Date.now}-file-${file.originalname}`;
     }
     return {
       bucketName: "photos",
-      filename: `${Math.random(11)}-file-${file.originalname}`,
+      filename: `${Date.now}-file-${file.originalname}`,
     };
   },
 });
