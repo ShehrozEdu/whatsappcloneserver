@@ -21,4 +21,5 @@ Router.post(
   Middleware.single("file"),
   FileController.fileUpload
 );
+Router.get("/file/:filename", FileController.getImage);
 module.exports = Router;
