@@ -4,7 +4,7 @@ const UserController = require("../controllers/UserController");
 const Conversation = require("../controllers/ConversationController");
 const Messages = require("../controllers/MessagesController");
 const FileController = require("../controllers/FileController");
-const Middleware = require("../middleware/Middleware");
+const upload = require("../middleware/upload");
 
 Router.post("/add-user", UserController.addUser);
 Router.get("/get-user", UserController.getUser);
@@ -16,9 +16,5 @@ Router.get("/messages/get/:id", Messages.getMessages);
 
 //File
 
-Router.post(
-  "/file/upload",
-  Middleware.single("file"),
-  FileController.fileUpload
-);
+Router.post("/file/upload", upload.single("file"), FileController.fileUpload);
 module.exports = Router;
