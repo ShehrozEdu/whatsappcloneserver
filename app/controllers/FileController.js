@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const grid = require("gridfs-stream");
 
-const url = "localhost:4000/api";
+const url = "http://localhost:4000/api";
 
 let gfs;
 let gridFsBucket;
