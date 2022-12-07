@@ -8,7 +8,7 @@ const ConversationController = {
 
       const exist = await Conversation.findOne({
         members: { $all: [receiverId, senderId] },
-      }); // $all = Search for an item in array ......
+      });
       if (exist) {
         return res.status(200).json("Conversation already exists");
       }
