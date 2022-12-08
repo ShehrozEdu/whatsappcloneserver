@@ -1,10 +1,13 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose")
 const cors = require("cors");
 const Router = require("./app/routes/route");
+const connectDB = require("./config/connectDB");
 
+//Server
+connectDB();
 //middleware
 app.use(cors());
 app.use(express.json());
@@ -13,61 +16,50 @@ app.use(express.urlencoded({ extended: false }));
 //cors
 app.use("/api", Router);
 
+const server = app.listen(process.env.PORT, () => {
+  console.log("Go chat, don't waste time here");
+});
 //SOCKET IO TEST
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "https://whatsapp-clone-1.netlify.app",
+  },
+});
 
-// const io = require("socket.io")(9000, {
-//   cors: {
-//     origin: "http://localhost:3000",
-//   },
-// });
+let users = [];
 
-// let users = [];
+const addUser = (userData, socketId) => {
+  !users.some((user) => user.sub === userData.sub) &&
+    users.push({ ...userData, socketId });
+};
 
-// const addUser = (userData, socketId) => {
-//   !users.some((user) => user.sub === userData.sub) &&
-//     users.push({ ...userData, socketId });
-// };
+const removeUser = (socketId) => {
+  users = users?.filter((user) => user.socketId !== socketId);
+};
 
-// const removeUser = (socketId) => {
-//   users = users?.filter((user) => user.socketId !== socketId);
-// };
+const getUser = (userId) => {
+  return users.find((user) => user.sub === userId);
+};
 
-// const getUser = (userId) => {
-//   return users.find((user) => user.sub === userId);
-// };
+io.on("connection", (socket) => {
+  console.log("user connected");
 
-// io.on("connection", (socket) => {
-//   console.log("user connected");
-
-//   //connect
-//   socket.on("addUser", (userData) => {
-//     addUser(userData, socket.id);
-//     io.emit("getUsers", users);
-//   });
-
-//   //send message
-//   socket.on("sendMessage", (data) => {
-//     const user = getUser(data.receiverId);
-//     io.to(user.socketId).emit("getMessage", data);
-//   });
-
-//   //disconnect
-//   socket.on("disconnect", () => {
-//     console.log("user disconnected");
-//     removeUser(socket.id);
-//     io.emit("getUsers", users);
-//   });
-// });
-
-//Server
-mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(() => {
-    app.listen(process.env.PORT, () => {
-      console.log("Go chat, don't waste time here");
-    });
-  })
-  .catch((error) => {
-    console.log(error);
-    process.exit(1);
+  //connect
+  socket.on("addUser", (userData) => {
+    addUser(userData, socket.id);
+    io.emit("getUsers", users);
   });
+
+  //send message
+  socket.on("sendMessage", (data) => {
+    const user = getUser(data.receiverId);
+    io.to(user?.socketId).emit("getMessage", data);
+  });
+
+  //disconnect
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
+    removeUser(socket.id);
+    io.emit("getUsers", users);
+  });
+});
