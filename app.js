@@ -23,6 +23,7 @@ const server = app.listen(process.env.PORT, () => {
 const io = require("socket.io")(server, {
   cors: {
     origin: "https://whatsapp-clone-1.netlify.app",
+    transports: ["websocket"],
   },
 });
 
