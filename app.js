@@ -2,8 +2,9 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 // const mongoose = require("mongoose")
+const path = require("path");
 const cors = require("cors");
-const Router = require("./app/routes/route");
+const Router = require("./routes/route");
 const connectDB = require("./config/connectDB");
 
 //Server
@@ -16,14 +17,30 @@ app.use(express.urlencoded({ extended: false }));
 //cors
 app.use("/api", Router);
 
+// --------------------------deployment------------------------------
+
+const __dirname1 = path.resolve();
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname1, "/frontend/build")));
+
+  app.get("*", (req, res) =>
+    res.sendFile(path.resolve(__dirname1, "frontend", "build", "index.html"))
+  );
+} else {
+  app.get("/", (req, res) => {
+    res.send("API is running..");
+  });
+}
+
+// --------------------------deployment------------------------------
 const server = app.listen(process.env.PORT, () => {
   console.log("Go chat, don't waste time here");
 });
 //SOCKET IO TEST
 const io = require("socket.io")(server, {
   cors: {
-    origin: "https://whatsapp-clone-1.netlify.app",
-    transports: ["websocket"],
+    origin: "http://localhost:3000",
   },
 });
 
