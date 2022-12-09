@@ -4,7 +4,7 @@ const UserController = require("../controllers/UserController");
 const Conversation = require("../controllers/ConversationController");
 const Messages = require("../controllers/MessagesController");
 const FileController = require("../controllers/FileController");
-const upload = require("../../server/middleware/upload");
+const upload = require("../middleware/upload");
 
 Router.post("/add-user", UserController.addUser);
 Router.get("/get-user", UserController.getUser);
