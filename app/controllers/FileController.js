@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const grid = require("gridfs-stream");
 
-const url = "http://localhost:4000/api";
+const url = "https://whatsapp-clone-1.netlify.app//api";
 
 let gfs;
 let gridFsBucket;
